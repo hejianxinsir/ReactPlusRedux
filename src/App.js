@@ -1,44 +1,47 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { connect } from 'react-redux';
 
 class App extends React.Component {
 	constructor(props){
 		super(props)
 	}
 
-	add1(){
-		this.props.store.dispatch({type: 'add', payload: 1})
-	}
-	add2(){
-		this.props.store.dispatch({type: 'add', payload: 2})
-	}
-	addIfOdd(){
-		if(this.props.store.getState() % 2 === 1){
-			this.props.store.dispatch({type: 'add', payload: 1})
-		}
-	}
-	add4(){
-		let store = this.props.store
-		setTimeout(function(){
-			store.dispatch({type: 'add',payload: 1})
-		},2000)
-	}
-
 	render(){
 		 return (
    		 <div className="App">
-	 		 	你点击了<span id="times">{this.props.value}</span>次
+	 		 	你点击了<span>{this.props.n}</span>次
 	 		 	<div>
-	 		 		<button id="add1" onClick={this.add1.bind(this)}>+1</button>
-	 		 		<button id="add2" onClick={this.add2.bind(this)}>+2</button>
-	 		 		<button id="addIfOdd" onClick={this.addIfOdd.bind(this)}>单数加1</button>
-	 		 		<button id="add1After2Sec" onClick={this.add4.bind(this)}>两秒后+1</button>
+	 		 		<button id="add1" onClick={()=>this.props.add1()}>+1</button>
+	 		 		<button id="add2" onClick={()=>this.props.add2()}>+2</button>
+	 		 		<button id="addIfOdd" onClick={()=>this.props.addIfOdd()}>单数加1</button>
+	 		 		<button id="add1After2Sec">两秒后+1</button>
 	 		 	</div>
    		 </div>
   	);
-	
 	}
- }
+}
 
-export default App;
+function getPartialStore(state){	// 这里是个函数
+ 	return {
+		n: state.n
+	}
+}
+
+const actionCreator = {		// 这里要是一个对象！
+	add1: ()=>{
+		return {type: 'add', payload: 1}
+	},
+	add2: ()=>{
+		return {type: 'add', payload: 2}
+	},
+	addIfOdd: ()=>{
+		if(){
+		
+		}
+		return {type: 'add', payload: 1}
+	}
+}
+
+export default connect(getPartialStore, actionCreator)(App);
